@@ -27,7 +27,10 @@ def create_google_url(query, site=""):
 class GoogleSerpSpider(scrapy.Spider):
     name = "google_serp"
     allowed_domains = ["api.scraperapi.com"]
-    start_urls = ["https://api.scraperapi.com"]
+    custom_settings = {"ROBOTSTXT_OBEY": False, 
+                       "LOG_LEVEL": "INFO", 
+                       "CONCURRENT_REQUESTS_PER_DOMAIN": 10, 
+                       "RETRY_TIMES": 5}
 
     # Function call when spider request initiated
     def start_requests(self):
