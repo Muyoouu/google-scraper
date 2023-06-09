@@ -1,5 +1,5 @@
 import scrapy
-import os
+from os import environ
 from dotenv import load_dotenv
 from urllib.parse import urlparse
 from urllib.parse import urlencode
@@ -9,7 +9,7 @@ load_dotenv()
 
 # Prepare scraperAPI request URL for proxy connection
 def get_url(url):
-    payload = {"api_key": os.environ.get("SCRAPER_API_KEY"), "url": url, "autoparse": "true", "country_code": "us"}
+    payload = {"api_key": environ.get("SCRAPER_API_KEY"), "url": url, "autoparse": "true", "country_code": "us"}
     proxy_url = "https://api.scraperapi.com/?" + urlencode(payload)
     return proxy_url
 
@@ -30,7 +30,7 @@ class GoogleSerpSpider(scrapy.Spider):
     # Function call when spider request initiated
     def start_requests(self):
         queries = ["scrapy", "beautifulsoup"]
-        if not os.environ.get("SCRAPER_API_KEY") or not os.environ.get("SCRAPEOPS_API_KEY"):
+        if not environ.get("SCRAPER_API_KEY") or not environ.get("SCRAPEOPS_API_KEY"):
             raise RuntimeError("API_KEY not set")
         for query in queries:
             url = create_google_url(query)
