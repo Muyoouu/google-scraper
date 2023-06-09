@@ -1,4 +1,6 @@
 import scrapy
+import json
+import datetime
 from os import environ
 from dotenv import load_dotenv
 from urllib.parse import urlparse
@@ -38,4 +40,16 @@ class GoogleSerpSpider(scrapy.Spider):
         return super().start_requests()
 
     def parse(self, response):
-        pass
+        results = json.loads(response.text)
+        pos = response.meta["pos"]
+        dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        for result in results["organic_results"]:
+            item = {
+                "title": result["title"],
+                "snippet": result["snippet"],
+                "link": result["link"],
+                "position": pos,
+                "date": dt
+            }
+            pos += 1
+            yield item
