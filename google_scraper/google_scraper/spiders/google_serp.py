@@ -29,7 +29,7 @@ class GoogleSerpSpider(scrapy.Spider):
     allowed_domains = ["api.scraperapi.com"]
     custom_settings = {"ROBOTSTXT_OBEY": False, 
                        "LOG_LEVEL": "INFO", 
-                       "CONCURRENT_REQUESTS_PER_DOMAIN": 10, 
+                       "CONCURRENT_REQUESTS_PER_DOMAIN": 5, 
                        "RETRY_TIMES": 5}
 
     # Function call when spider request initiated
