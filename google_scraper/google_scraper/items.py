@@ -12,3 +12,4 @@ class GoogleSearchResult(scrapy.Item):
     title = scrapy.Field()
     url = scrapy.Field()
     text = scrapy.Field()
+    datetime = scrapy.Field()
