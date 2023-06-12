@@ -11,7 +11,7 @@ load_dotenv()
 # Prepare scraperAPI request URL for proxy connection
 # Request URL must use allowed domain only
 def get_url(url):
-    payload = {"api_key": environ.get("SCRAPER_API_KEY"), "autoparse": "true", "country_code": "us"}
+    payload = {"api_key": environ.get("SCRAPER_API_KEY"), "country_code": "us"}
     proxy_url = "http://api.scraperapi.com/?" + urlencode(payload) + "&url=" + url
     return proxy_url
 
