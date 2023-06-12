@@ -1,6 +1,6 @@
 import scrapy
-import json
-import datetime
+from datetime import datetime
+from google_scraper.items import GoogleSearchResult
 from os import environ
 from dotenv import load_dotenv
 from urllib.parse import urlencode
@@ -34,7 +34,7 @@ class GoogleSerpSpider(scrapy.Spider):
                        "RETRY_TIMES": 5}
     
     # HTTP request headers
-    headers = {"Accept": "application/json",
+    headers = {"Accept": "application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
                "Accept-Encoding": "gzip, deflate, br",
                "Accept-Language": "en-US,en;q=0.9",
                "Sec-Ch-Ua": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\"",
@@ -48,7 +48,7 @@ class GoogleSerpSpider(scrapy.Spider):
 
     # Function call when spider crawl request initiated
     def start_requests(self):
-        queries = ["kaesang site:twitter.com"]
+        queries = ["kaesang"]
         if not environ.get("SCRAPER_API_KEY") or not environ.get("SCRAPEOPS_API_KEY"):
             raise RuntimeError("API_KEY not set")
         for query in queries:
@@ -59,13 +59,17 @@ class GoogleSerpSpider(scrapy.Spider):
 
     # Function to parse response obtained
     def parse(self, response):
-        results = json.loads(response.text)
-        dt = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        for result in results["organic_results"]:
-            item = {
-                "title": result["title"],
-                "snippet": result["snippet"],
-                "link": result["link"],
-                "date": dt
-            }
+        dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        item = GoogleSearchResult()
+        for box in response.xpath("//h1[contains(text(),'Search Results')]/following-sibling::div[1]/div"):
+            item["title"] = box.xpath(".//h3/text()").get(),
+            item["url"] = box.xpath(".//h3/../@href").get(),
+            item["text"] = "".join(box.xpath(".//div[@data-sncf]//text()").getall()),
+            item["datetime"] = dt
+            
+            # if not item["title"] or item["url"]:
+            #     continue
+            
+            # item["url"] = item["url"].split("://")[1].replace("www.", "")
+            
             yield item
