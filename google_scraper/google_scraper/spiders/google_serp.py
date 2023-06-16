@@ -11,8 +11,8 @@ load_dotenv()
 # Prepare scraperAPI request URL for proxy connection
 # Request URL must use allowed domain only
 def get_url(url):
-    payload = {"api_key": environ.get("SCRAPER_API_KEY"), "country_code": "us"}
-    proxy_url = "http://api.scraperapi.com/?" + urlencode(payload) + "&url=" + url
+    payload = {"api_key": environ.get("SCRAPEOPS_API_KEY")}
+    proxy_url = "https://proxy.scrapeops.io/v1/?" + urlencode(payload) + "&url=" + url
     return proxy_url
 
 # Prepare Google query URL
@@ -25,7 +25,7 @@ class GoogleSerpSpider(scrapy.Spider):
     name = "google_serp"
     
     # Domains to send request into
-    allowed_domains = ["api.scraperapi.com"]
+    allowed_domains = ["api.scraperapi.com", "proxy.scrapeops.io"]
     
     # Custom settings for this spider, override settings.py
     custom_settings = {"ROBOTSTXT_OBEY": False, 
@@ -48,7 +48,7 @@ class GoogleSerpSpider(scrapy.Spider):
 
     # Function call when spider crawl request initiated
     def start_requests(self):
-        queries = ["naruto"]
+        queries = ["naruto&num=100"]
         if not environ.get("SCRAPER_API_KEY") or not environ.get("SCRAPEOPS_API_KEY"):
             raise RuntimeError("API_KEY not set")
         for query in queries:
