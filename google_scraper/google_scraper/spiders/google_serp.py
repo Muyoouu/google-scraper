@@ -48,7 +48,7 @@ class GoogleSerpSpider(scrapy.Spider):
 
     # Function call when spider crawl request initiated
     def start_requests(self):
-        queries = ["kaesang"]
+        queries = ["naruto"]
         if not environ.get("SCRAPER_API_KEY") or not environ.get("SCRAPEOPS_API_KEY"):
             raise RuntimeError("API_KEY not set")
         for query in queries:
@@ -61,7 +61,10 @@ class GoogleSerpSpider(scrapy.Spider):
     def parse(self, response):
         dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         item = GoogleSearchResult()
-        for box in response.xpath("//h1[contains(text(),'Search Results')]/following-sibling::div[1]/div"):
+        results = response.xpath("//h1[contains(text(),'Search Results')]/following-sibling::div[1]/div")
+        if not results:
+            raise ValueError("Parse Failed")
+        for box in results:
             item["title"] = box.xpath(".//h3/text()").get(),
             item["url"] = box.xpath(".//h3/../@href").get(),
             item["text"] = "".join(box.xpath(".//div[@data-sncf]//text()").getall()),
