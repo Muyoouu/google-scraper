@@ -67,7 +67,7 @@ class GoogleSerpSpider(scrapy.Spider):
         for box in results:
             item["title"] = box.xpath(".//h3/text()").get(),
             item["url"] = box.xpath(".//h3/../@href").get(),
-            item["text"] = "".join(box.xpath(".//div[@data-sncf]//text()").getall()),
+            item["text"] = "".join(box.xpath(".//div[@data-sncf='1']//text()").getall()),
             item["datetime"] = dt
             
             # if not item["title"] or item["url"]:
