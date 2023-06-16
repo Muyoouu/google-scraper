@@ -31,7 +31,8 @@ class GoogleSerpSpider(scrapy.Spider):
     custom_settings = {"ROBOTSTXT_OBEY": False, 
                        "LOG_LEVEL": "INFO", 
                        "CONCURRENT_REQUESTS_PER_DOMAIN": 1, 
-                       "RETRY_TIMES": 5}
+                       "RETRY_TIMES": 5,
+                       "SCRAPEOPS_API_KEY": environ.get("SCRAPEOPS_API_KEY")}
     
     # HTTP request headers
     headers = {"Accept": "application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
