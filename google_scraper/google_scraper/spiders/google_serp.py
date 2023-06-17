@@ -16,8 +16,13 @@ def get_url(url):
     return proxy_url
 
 # Prepare Google query URL
-def create_google_url(query):
-    return "http://www.google.com/search?" + urlencode({'q':query})
+def create_google_url(query, num=100, start=0):
+    url = {
+        "q": query,
+        "num": num,
+        "start": start
+    }
+    return "https://www.google.com/search?" + urlencode(url)
 
 
 # Spider
@@ -49,7 +54,7 @@ class GoogleSerpSpider(scrapy.Spider):
 
     # Function call when spider crawl request initiated
     def start_requests(self):
-        queries = ["naruto&num=100"]
+        queries = ["naruto"]
         if not environ.get("SCRAPER_API_KEY") or not environ.get("SCRAPEOPS_API_KEY"):
             raise RuntimeError("API_KEY not set")
         for query in queries:
