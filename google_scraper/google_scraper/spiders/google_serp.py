@@ -1,4 +1,5 @@
 import scrapy
+import logging
 from datetime import datetime
 from google_scraper.items import GoogleSearchResult
 from os import environ
@@ -8,11 +9,13 @@ from urllib.parse import urlencode
 # Loads environment variables from ".env"
 load_dotenv()
 
-# Prepare scraperAPI request URL for proxy connection
+# Prepare API request URL for proxy connection
 # Request URL must use allowed domain only
 def get_url(url):
-    payload = {"api_key": environ.get("SCRAPEOPS_API_KEY")}
-    proxy_url = "https://proxy.scrapeops.io/v1/?" + urlencode(payload) + "&url=" + url
+    payload = {"api_key": environ.get("SCRAPEOPS_API_KEY"), "url": url}
+    proxy_url = "https://proxy.scrapeops.io/v1/?" + urlencode(payload)
+    
+    logging.info("Final URL: %s", proxy_url)
     return proxy_url
 
 # Prepare Google query URL
@@ -55,16 +58,26 @@ class GoogleSerpSpider(scrapy.Spider):
     # Function call when spider crawl request initiated
     def start_requests(self):
         queries = ["naruto"]
+        scraped_items = 0
+        ITEMS_PER_REQUEST = 100
+        DESIRED_ITEMS = 200
+        
         if not environ.get("SCRAPER_API_KEY") or not environ.get("SCRAPEOPS_API_KEY"):
             raise RuntimeError("API_KEY not set")
         for query in queries:
-            url = create_google_url(query)
-            yield scrapy.Request(url=get_url(url), 
-                                 callback=self.parse,
-                                 headers=self.headers)
+            url = create_google_url(query, num=ITEMS_PER_REQUEST)
+            yield scrapy.Request(url=get_url(url), callback=self.parse, headers=self.headers, meta={"scraped_items": scraped_items, 
+                                                                                                    "query": query, 
+                                                                                                    "DESIRED_ITEMS": DESIRED_ITEMS, 
+                                                                                                    "ITEMS_PER_REQUEST": ITEMS_PER_REQUEST})
 
     # Function to parse response obtained
     def parse(self, response):
+        query = response.meta["query"]
+        scraped_items = response.meta["scraped_items"]
+        ITEMS_PER_REQUEST = response.meta["ITEMS_PER_REQUEST"]
+        DESIRED_ITEMS = response.meta["DESIRED_ITEMS"]
+
         dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         item = GoogleSearchResult()
         results = response.xpath("//h1[contains(text(),'Search Results')]/following-sibling::div[1]/div")
@@ -76,9 +89,13 @@ class GoogleSerpSpider(scrapy.Spider):
             item["text"] = "".join(box.xpath(".//div[@data-sncf='1']//text()").getall()),
             item["datetime"] = dt
             
-            # if not item["title"] or item["url"]:
-            #     continue
-            
-            # item["url"] = item["url"].split("://")[1].replace("www.", "")
-            
             yield item
+
+        # Call request to next page if desired items to be scraped ("DESIRED_ITEMS") not yet scraped
+        scraped_items += ITEMS_PER_REQUEST
+        if scraped_items < DESIRED_ITEMS:
+            url = create_google_url(query, num=ITEMS_PER_REQUEST, start=scraped_items)
+            yield scrapy.Request(url=get_url(url), callback=self.parse, headers=self.headers, meta={"scraped_items": scraped_items, 
+                                                                                                    "query": query, 
+                                                                                                    "DESIRED_ITEMS": DESIRED_ITEMS, 
+                                                                                                    "ITEMS_PER_REQUEST": ITEMS_PER_REQUEST})
