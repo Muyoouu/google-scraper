@@ -64,7 +64,7 @@ class GoogleSerpSpider(scrapy.Spider):
         item = GoogleSearchResult()
         results = response.xpath("//h1[contains(text(),'Search Results')]/following-sibling::div[1]/div")
         if not results:
-            raise ValueError("Parse Failed")
+            raise ValueError("Unexpected HTML xpath, parse failed")
         for box in results:
             item["title"] = box.xpath(".//h3/text()").get(),
             item["url"] = box.xpath(".//h3/../@href").get(),
