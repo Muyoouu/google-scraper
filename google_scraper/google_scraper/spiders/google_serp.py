@@ -113,9 +113,9 @@ class GoogleSerpSpider(scrapy.Spider):
         item = GoogleSearchResult()
         results = json.loads(response.text)
         for box in results["data"]["organic_results"]:
-            item["title"] = box.get("title","Empty"),
-            item["url"] = box.get("link","Empty"),
-            item["text"] = box.get("snippet","Empty"),
+            item["title"] = box.get("title",""),
+            item["url"] = box.get("link",""),
+            item["text"] = box.get("snippet",""),
             item["datetime"] = dt
             
             yield item
