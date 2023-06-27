@@ -13,7 +13,10 @@ load_dotenv()
 # Prepare API request URL for proxy connection
 # Request URL must use allowed domain only
 def get_url(url):
-    payload = {"api_key": environ.get("SCRAPEOPS_API_KEY"), "auto_extract": "google", "url": url}
+    payload = {"api_key": environ.get("SCRAPEOPS_API_KEY"), 
+               "auto_extract": "google", 
+               "url": url
+    }
     proxy_url = "https://proxy.scrapeops.io/v1/?" + urlencode(payload)
     
     logging.info("Final URL: %s", proxy_url)
@@ -59,10 +62,11 @@ class GoogleSerpSpider(scrapy.Spider):
 
     # Function call when spider crawl request initiated
     def start_requests(self):
-        queries = ["apple fact"]
+        queries = ["coffee shop in New York", "best coffee in New York", "New York coffee shops", "local coffee shops in New York", "coffee beans in New York", 
+                   "New York cafe", "espresso in New York", "coffeehouse in New York", "New York latte", "tasty coffee NYC"]
         current_page = 0
         ITEMS_PER_REQUEST = 100
-        TARGET_PAGE = 2
+        TARGET_PAGE = 1
         
         if not environ.get("SCRAPER_API_KEY") or not environ.get("SCRAPEOPS_API_KEY"):
             raise RuntimeError("API_KEY not set")
