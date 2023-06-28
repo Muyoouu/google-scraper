@@ -12,7 +12,7 @@ stopwords = set(stopwords.words('english'))
 stemmer = PorterStemmer()
 
 # Load the scraped data from the JSON file
-with open('output.json', 'r') as f:
+with open('output/output.json', 'r') as f:
     data = json.load(f)
 
 # Initialize a defaultdict to store the frequency of each keyword
@@ -56,6 +56,6 @@ df.index.name = 'Keyword'
 df = df.sort_values('Frequency', ascending=False)
 
 # Save the DataFrame to a CSV file
-df.to_csv('keyword_analysis_result.csv')
+df.to_csv('output/keyword_analysis_result.csv')
 
 print("Keyword analysis results saved to keyword_analysis_result.csv")
