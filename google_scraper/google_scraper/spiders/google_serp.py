@@ -62,8 +62,8 @@ class GoogleSerpSpider(scrapy.Spider):
 
     # Function call when spider crawl request initiated
     def start_requests(self):
-        queries = ["coffee shop in New York", "best coffee in New York", "New York coffee shops", "local coffee shops in New York", "coffee beans in New York", 
-                   "New York cafe", "espresso in New York", "coffeehouse in New York", "New York latte", "tasty coffee NYC"]
+        queries = ["coffee shop in New York", "coffee shops nyc", "best coffee shops in manhattan", "unique coffee shops in nyc", 
+                   "best coffee shops in brooklyn", "coffee nyc", "best coffee near times square", "cozy coffee shops nyc"]
         current_page = 0
         ITEMS_PER_REQUEST = 100
         TARGET_PAGE = 1
