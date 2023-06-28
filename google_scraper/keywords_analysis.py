@@ -23,8 +23,8 @@ word_pattern = re.compile(r'\b\w+\b')
 
 # Iterate over the scraped data and extract keywords from the title and description
 for result in data:
-    title = result.get('title', '')
-    description = result.get('text', '')
+    title = result.get('title', '')[0]
+    description = result.get('text', '')[0]
 
     # Extract keywords from the title
     title_keywords = word_pattern.findall(title.lower())
@@ -41,8 +41,8 @@ for result in data:
         # Remove stopwords
         if keyword not in stopwords:
             # Apply stemming
-            stemmed_keyword = stemmer.stem(keyword)
-            processed_keywords.append(stemmed_keyword)
+            # stemmed_keyword = stemmer.stem(keyword)
+            processed_keywords.append(keyword)
 
     # Increment the frequency count for each keyword
     for keyword in processed_keywords:
