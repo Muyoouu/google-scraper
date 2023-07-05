@@ -128,9 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Result csv & json file
-*.csv
-*.json
+# Output files
+output/
 
 # Test file
 test.py
