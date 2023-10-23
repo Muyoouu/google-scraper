@@ -27,14 +27,15 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Scraping data from Google search results can be challenging due to two main obstacles. Firstly, Google's search results are dynamic and constantly changing, making it difficult to extract accurate and reliable data consistently. Secondly, Google has robust bot detection measures in place, which pose a significant obstacle to gathering data from their website.
-To conquer these challenges, a specialized web scraping software solution has been developed with the following features:
+Scraping data from Google search results presents two significant challenges. First, Google's search results are in a constant state of flux, making it difficult to maintain consistent and accurate data extraction. Second, Google has implemented stringent bot detection measures, creating a substantial obstacle to web scraping.  
 
-1. **Dynamic Web Page Navigation:** The software is equipped with intelligent algorithms that effortlessly navigate through Google's dynamic web pages, ensuring accurate data collection regardless of how frequently the pages change.
+To address these challenges, I've developed specialized web scraping software with the following key features:  
 
-2. **Bypassing Bot Detection Measures:** A sophisticated proxy network has been integrated into the software to ensure that your scraping activities remain undetected as a bot by Google, allowing you to gather data seamlessly and without interruptions.
+1. **Dynamic Web Page Navigation:** My script includes instructions tailored to navigate Google's dynamic web pages effectively, allowing it to parse the ever-changing HTML content.  
 
-With this web scraping software, you can overcome the hurdles of scraping Google search results and extract the data you need efficiently and reliably..
+2. **Bypassing Bot Detection Measures:** I've integrated proxy network services into the script to ensure that my scraping activities remain undetected as a bot by Google.  
+
+For a complete project demo, please visit the [Google Scraper Notion Page](https://muyoouu.notion.site/Dynamic-Web-Scraping-Google-s-Search-Results-be0a066c3e3341a091786be95e8b718e?pvs=4).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -45,31 +46,6 @@ With this web scraping software, you can overcome the hurdles of scraping Google
 * [![Scrapy][Scrapy]][Scrapy-url]
 * [![Pandas][Pandas]][Pandas-url]
 
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-1. Activate Virtual Environment
-   ```bash
-   source env/bin/activate
-   ```
-2. Move inside the google_scraper/ directory
-   ```bash
-   cd google_scraper
-   ```
-3. Run the scrapy spider ("google_serp") to start scraping, specify the output file (JSON or CSV)
-   ```bash
-   scrapy crawl google_serp -o output/output.json
-   ```
-4. Run the analysis script
-   ```bash
-   python3 keyword_analysis.py
-   ```
-
-For project's complete demo see this [`Google Scraper Notion Page`](https://muyoouu.notion.site/Accurate-and-Anti-Bot-Google-Scraper-Built-with-Python-and-Scrapy-8d5a29a126ab402bb874551abf572eef?pvs=4)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -88,14 +64,6 @@ Distributed under the MIT License. See [`LICENSE.txt`](LICENSE.txt) for more inf
 Musa Yohanes - musayohanes00@gmail.com
 
 Project Link: [https://github.com/Muyoouu/google-scraper](https://github.com/Muyoouu/google-scraper)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-* Credits to the README file template provided by [Best-README-Template](https://github.com/othneildrew/Best-README-Template), very helpful!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
